@@ -1,9 +1,10 @@
-/*
+/* ============================================================================= 
 	Abstracted Mathematical Change Calculations
-	These four functions can handle all cases algebraically where three of four variables are known: 
-	Start number, end number, percent growth, and periods.
-*/
-
+	These four functions can handle all cases algebraically where three of four 
+	variables are known: Start number, end number, percent growth, and periods.
+	Note: The precision of some calculations may be affected by floating point 
+	calculations.
+============================================================================= */
 module.exports = {
 	percentGrowthByPeriod,
 	start,
