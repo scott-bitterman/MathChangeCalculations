@@ -33,10 +33,24 @@ test('Start value is 0. Testing dividing by zero in JS.', () => {
   expect(percentGrowthByPeriod(0, TEST.end, TEST.periods)).toBe(Infinity);
 });
 
+test('End growth is 0 should always be equal to -100%', () => {
+  expect(percentGrowthByPeriod(1, 0, 50)).toBe(-100);
+});
+
 test('Passing a string where a number is expected', () => {
   expect(percentGrowthByPeriod('IAmAString', TEST.end, TEST.periods)).toBe(NaN);
 });
 
 test('Negative growth', () => {
   expect(percentGrowthByPeriod(4, 1, 2)).toBe(-50);
+});
+
+test('Period equation with zero growth', () => {
+	// If there is zero growth, then periods are unknown/undefined.
+  expect(periods(4, 4, 0)).toBe(NaN);
+});
+
+test('Period equation with extraordianry growth', () => {
+	// If there is zero growth, then periods are unknown/undefined.
+  expect(periods(4, 4, 500)).toBe(NaN);
 });
