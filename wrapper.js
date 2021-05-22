@@ -1,5 +1,35 @@
+/* ============================================================================= 
+	Wrapper for the Four Change Calculations
+
+	This wrapper does the following to handle the algebra of mathematical change:
+		1. Determines if exactly three of the variables are defined.
+		2. Determines if exactly one of the variables is undefined.
+		3. If conditions (1) and (2) aren't met, then throws a meaningful error.
+		4. If conditions (1) and (2) are met, then it routes logic 
+		to the correct function to derive the single undefined variable.
+
+	This wrapper also handles...
+
+	This wrapper is a conveniece layer that allows for a single function to be 
+	called with indeterminate variables (as long as three of the four 
+	are defined). Could be helpful if use case is passing in the four variables
+	from a GUI.
+============================================================================= */
+module.exports = {
+	calc,
+	ERROR,
+};
+
+const {
+	percentGrowthByPeriod,
+	start,
+	end,
+	periods,
+} = require('../index');
+
 const ERROR = {
-	IsUndefinedOrANumber: 'Each value must be undefined or a number'
+	IsUndefinedOrANumber: 'Each value must be undefined or a number',
+	ExactlyOneUndefined: 'Exactly one of the four values must be undefined',
 };
 
 /**
@@ -10,28 +40,41 @@ const ERROR = {
  * @param  {Number} Percent growth
  * @return ???
  */
-function calc(startNumber, endNumber, periods = 1, percentGrowth) {
-	console.log({startNumber, endNumber, periods, percentGrowth});
-	// chkValues(startNumber, endNumber, periods = 1, percentGrowth)
+function calc(startNumber, endNumber, periods, percentGrowth) {
+	const values = {startNumber, endNumber, periods, percentGrowth};
+	const undefinedVal = chkValues(values);
+	const calcs = {
+		startNumber: startNumber(endNumber, periods, percentGrowth),
+		endNumber: endNumber(startNumber, periods, percentGrowth),
+		periods: periods(startNumber, endNumber, percentGrowth),
+		percentGrowthByPeriod: percentGrowthByPeriod(startNumber, endNumber, periods),
+	};
+	const val = calcs[undefinedVal];
+	console.log(`Calculated ${undefinedVal} as ${val} on these:`, values);
+	return val;
+}
 
+/**
+ * Checks the four values to ensure exactly one is undefined, and the 
+ * rest are numeric. 
+ * @param  {Object} Values: {startNumber, endNumber, periods, percentGrowth}
+ * @return {String|Error} If no errs, returns the string of 
+ */
+function chkValues(obj) {
+	const undefinedVals = [];
 
-	if (undefined === percentGrowth) {
-		console.log('Calculating percent growth over N-periods');
-		return percentGrowthByPeriod(startNumber, endNumber, periods);
+	for (const prop in obj) {
+		const val = obj[prop];
+		if (undefined === val) {
+			undefinedVals.push(prop);
+		} else if (isNaN(val)) {
+			throw new Error(ERROR.IsUndefinedOrANumber);
+		}
+	}
+
+	if (1 === undefinedVals.length) {
+		return undefinedVals[0];
 	} else {
-
+		throw new Error(ERROR.ExactlyOneUndefined);
 	}
-}
-
-function chkValues(startNumber, endNumber, periods, percentGrowth) {
-	if ([startNumber, endNumber, periods, percentGrowth].every(isUndefinedOrANumber)) {
-
-	}
-	else {
-		throw new Error(ERROR.IsUndefinedOrANumber);
-	}
-}
-
-function isUndefinedOrANumber(val) {
-	return undefined === val || !isNaN(val);
 }
