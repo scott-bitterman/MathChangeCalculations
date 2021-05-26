@@ -15,11 +15,6 @@
 	are defined). Could be helpful if use case is passing in the four variables
 	from a GUI.
 ============================================================================= */
-module.exports = {
-	calc,
-	ERROR,
-};
-
 const {
 	percentGrowthByPeriod,
 	start,
@@ -43,13 +38,23 @@ const ERROR = {
 function calc(startNumber, endNumber, periods, percentGrowth) {
 	const values = {startNumber, endNumber, periods, percentGrowth};
 	const undefinedVal = chkValues(values);
-	const calcs = {
-		startNumber: startNumber(endNumber, periods, percentGrowth),
-		endNumber: endNumber(startNumber, periods, percentGrowth),
-		periods: periods(startNumber, endNumber, percentGrowth),
-		percentGrowthByPeriod: percentGrowthByPeriod(startNumber, endNumber, periods),
-	};
-	const val = calcs[undefinedVal];
+	let val;
+
+	switch(undefinedVal) {
+	  case 'startNumber':
+	    val = startNumber(endNumber, periods, percentGrowth);
+	    break;
+	  case 'endNumber':
+	    val = endNumber(startNumber, periods, percentGrowth);
+	    break;
+	  case 'periods':
+	    val = endNumber(startNumber, periods, percentGrowth);
+	    break;
+	  case 'percentGrowthByPeriod':
+	    val = percentGrowthByPeriod(startNumber, periods, percentGrowth);
+	    break;
+	}
+
 	console.log(`Calculated ${undefinedVal} as ${val} on these:`, values);
 	return val;
 }
@@ -58,7 +63,7 @@ function calc(startNumber, endNumber, periods, percentGrowth) {
  * Checks the four values to ensure exactly one is undefined, and the 
  * rest are numeric. 
  * @param  {Object} Values: {startNumber, endNumber, periods, percentGrowth}
- * @return {String|Error} If no errs, returns the string of 
+ * @return {String|Error} If no errs, returns the string of variable name
  */
 function chkValues(obj) {
 	const undefinedVals = [];
@@ -73,8 +78,14 @@ function chkValues(obj) {
 	}
 
 	if (1 === undefinedVals.length) {
+		// Return the only undefined value
 		return undefinedVals[0];
 	} else {
 		throw new Error(ERROR.ExactlyOneUndefined);
 	}
 }
+
+module.exports = {
+	calc,
+	ERROR,
+};

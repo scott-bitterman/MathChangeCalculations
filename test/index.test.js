@@ -46,7 +46,7 @@ test('Negative growth', () => {
 });
 
 test('Period equation with zero growth', () => {
-	// If there is zero growth, then periods are unknown/undefined.
+	// If there is zero growth (change), then periods are unknown/undefined.
   expect(periods(4, 4, 0)).toBe(NaN);
 });
 
