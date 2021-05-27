@@ -2,13 +2,12 @@
 	Abstracted Mathematical Change Calculations
 
 	* These four primary functions can handle all cases algebraically 
-	where three of four numbers are known: start, end, percent growth, 
+	where three of four numbers are known: start, end, percent change, 
 	and periods.
 	* Exactly one of these four variables can be undefined at a higher level and 
-	routed to one of the functions below to derive the undefined value.
-	
-	Note: The precision of some calculations may be affected by floating point 
-	operations.
+	routed to one of the four functions below to derive the undefined value.
+	* The precision of some calculations may be affected by floating point 
+	operations!
 ============================================================================= */
 module.exports = {
 	percentGrowthByPeriod,
@@ -36,7 +35,7 @@ function percentGrowthByPeriod(start, end, periods) {
  * Derive start number on end, periods, and percent change
  * @param  {Number} End
  * @param  {Number} Periods
- * @param  {Number} Percent Growth
+ * @param  {Number} Percent Change
  * @return {Number} Start Amt
  */
 function start(end, periods, percent) {
@@ -59,11 +58,11 @@ function end(start, periods, percent) {
 }
 
 /**
- * Derive periods on start, end, and percent growth
+ * Derive periods on start, end, and percent change
  * Math.log is the natural log (ln) having a base of e
- * @param  {Number} Start Amt
- * @param  {Number} End Amt
- * @param  {Number} Percent Growth
+ * @param  {Number} Start
+ * @param  {Number} End
+ * @param  {Number} Percent Change
  * @return {Number} Periods
  */
 function periods(start, end, percent) {
@@ -81,9 +80,8 @@ function periods(start, end, percent) {
  * changeFactorOnPercent will always be 1 or greater.
  * A changeFactorOnPercent of 1 indicates 0 change. 
  * Anything multiplied by 1 is itself. No change.
- * @param  {Number} Start
- * @param  {Number} End
- * @return {Number} Change factor total
+ * @param  {Number} Percent
+ * @return {Number} Change factor on percent
  */
 function changeFactorOnPercent(percent) {
 	// If change is 100%, then we want a doubling for each period, 
