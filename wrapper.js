@@ -20,7 +20,7 @@ const {
 	start,
 	end,
 	periods,
-} = require('../index');
+} = require('./index');
 
 const ERROR = {
 	IsUndefinedOrANumber: 'Each value must be undefined or a number',

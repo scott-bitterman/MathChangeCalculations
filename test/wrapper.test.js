@@ -4,6 +4,6 @@ const {
 } = require('../wrapper');
 
 test('Percent growth by period', () => {
-  expect(percentGrowthByPeriod(8, 1, 3)).toBe(-50);
+  expect(calc(8, 1, 3)).toBe(-50);
 });
 

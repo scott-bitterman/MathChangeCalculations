@@ -51,6 +51,7 @@ test('Period equation with zero growth', () => {
 });
 
 test('Period equation with extraordianry growth', () => {
-	// If there is zero growth, then periods are unknown/undefined.
-  expect(periods(4, 4, 500)).toBe(NaN);
+	// If there is zero growth, but a percent growth is specified,
+	// then expect zero
+  expect(periods(4, 4, 500)).toBe(0);
 });
