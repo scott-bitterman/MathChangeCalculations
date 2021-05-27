@@ -10,7 +10,7 @@
 	operations!
 ============================================================================= */
 module.exports = {
-	percentGrowthByPeriod,
+	percentChangeByPeriod,
 	start,
 	end,
 	periods,
@@ -18,17 +18,17 @@ module.exports = {
 
 /**
  * Derive percent change over periods
- * @param  {Number} Start Amt
- * @param  {Number} End Amt
+ * @param  {Number} Start
+ * @param  {Number} End
  * @param  {Number} Periods
- * @return {Number} Percent Growth
+ * @return {Number} Percent Change
  */
-function percentGrowthByPeriod(start, end, periods) {
+function percentChangeByPeriod(start, end, periods) {
 	const change = end / start;
 	const exponent = 1 / periods;
-	const changeRateByPeriod = Math.pow(change, exponent) - 1;
-	const percentGrowthByPeriod = changeRateByPeriod * 100;
-	return percentGrowthByPeriod;
+	const changeFactor = Math.pow(change, exponent) - 1;
+	const percentChangeByPeriod = changeFactor * 100;
+	return percentChangeByPeriod;
 }
 
 /**
@@ -66,20 +66,21 @@ function end(start, periods, percent) {
  * @return {Number} Periods
  */
 function periods(start, end, percent) {
-	const change = changeFactorOnPercent(percent); 
+	const change = end / start;
+	const changeByPeriod = changeFactorOnPercent(percent); 
 	const lnChange = Math.log(change);
-	const changeTotal = end / start;
-	const lnChangeTotal = Math.log(changeTotal);
-	const periods = lnChangeTotal / lnChange;
-	// Leaving the console.log() below for ellucidation. 
-	// console.log({change, lnChange, changeTotal, lnChangeTotal, periods});
+	const lnChangeByPeriod = Math.log(changeByPeriod);
+	const periods = lnChange / lnChangeByPeriod;
+	// Leaving console.log() for ellucidation
+	console.log({change, changeByPeriod, lnChange, lnChangeByPeriod, periods});
 	return periods;
 }
 
 /**
- * changeFactorOnPercent will always be 1 or greater.
+ * changeFactorOnPercent will always be non-negative.
  * A changeFactorOnPercent of 1 indicates 0 change. 
  * Anything multiplied by 1 is itself. No change.
+ * A changeFactorOnPercent of 0, means a -100%
  * @param  {Number} Percent
  * @return {Number} Change factor on percent
  */
