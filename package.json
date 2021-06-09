@@ -1,14 +1,14 @@
 {
   "name": "growth_calc",
   "version": "1.0.0",
-  "description": "Calculates the percent growth or loss over time",
+  "description": "Calculates change values of numbers",
   "main": "index.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
     "test": "jest",
-    "lint": "eslint .",
+    "lint": "./node_modules/.bin/eslint **/*.js",
     "start": "node index"
   },
   "author": "Scott Bitterman",
@@ -18,7 +18,11 @@
     "url": "https://github.com/bitterman"
   },
   "devDependencies": {
-    "eslint": "7.26.0",
+    "eslint": "^7.28.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.1.0",
     "jest": "26.6.3"
   }
 }
