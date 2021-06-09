@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "jest",
-    "lint": "./node_modules/.bin/eslint **/*.js",
+    "lint": "eslint index.js wrapper.js",
     "start": "node index"
   },
   "author": "Scott Bitterman",
