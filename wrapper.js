@@ -16,13 +16,13 @@
 	from a GUI.
 ============================================================================= */
 const {
-	percentGrowthByPeriod,
+	percentChangeByPeriod,
 	start,
 	end,
 	periods,
-} = require('./index');
+} = require('./index.js');
 
-const ERROR = {
+const ERRS = {
 	IsUndefinedOrANumber: 'Each value must be undefined or a number',
 	ExactlyOneUndefined: 'Exactly one of the four values must be undefined',
 };
@@ -32,26 +32,26 @@ const ERROR = {
  * @param  {Number} Start Amount
  * @param  {Number} End Amount
  * @param  {Number} Number of periods
- * @param  {Number} Percent growth
+ * @param  {Number} Percent change
  * @return ???
  */
-function calc(startNumber, endNumber, periods, percentGrowth) {
-	const values = {startNumber, endNumber, periods, percentGrowth};
+function calc(startNumber, endNumber, period, percentChange) {
+	const values = {startNumber, endNumber, period, percentChange};
 	const undefinedVal = chkValues(values);
 	let val;
 
 	switch(undefinedVal) {
 	  case 'startNumber':
-	    val = startNumber(endNumber, periods, percentGrowth);
+	    val = start(endNumber, period, percentChange);
 	    break;
 	  case 'endNumber':
-	    val = endNumber(startNumber, periods, percentGrowth);
+	    val = end(startNumber, period, percentChange);
 	    break;
-	  case 'periods':
-	    val = endNumber(startNumber, periods, percentGrowth);
+	  case 'period':
+	    val = periods(startNumber, endNumber, percentChange);
 	    break;
-	  case 'percentGrowthByPeriod':
-	    val = percentGrowthByPeriod(startNumber, periods, percentGrowth);
+	  case 'percentChange':
+	    val = percentChangeByPeriod(startNumber, endNumber, period);
 	    break;
 	}
 
@@ -62,7 +62,7 @@ function calc(startNumber, endNumber, periods, percentGrowth) {
 /**
  * Checks the four values to ensure exactly one is undefined, and the 
  * rest are numeric. 
- * @param  {Object} Values: {startNumber, endNumber, periods, percentGrowth}
+ * @param  {Object} Values: {startNumber, endNumber, periods, percentChange}
  * @return {String|Error} If no errs, returns the string of variable name
  */
 function chkValues(obj) {
@@ -73,19 +73,19 @@ function chkValues(obj) {
 		if (undefined === val) {
 			undefinedVals.push(prop);
 		} else if (isNaN(val)) {
-			throw new Error(ERROR.IsUndefinedOrANumber);
+			throw new Error(ERRS.IsUndefinedOrANumber);
 		}
 	}
 
 	if (1 === undefinedVals.length) {
-		// Return the only undefined value
+		// Return the name of the only undefined value
 		return undefinedVals[0];
 	} else {
-		throw new Error(ERROR.ExactlyOneUndefined);
+		throw new Error(ERRS.ExactlyOneUndefined);
 	}
 }
 
 module.exports = {
 	calc,
-	ERROR,
+	ERRS,
 };

@@ -8,6 +8,8 @@
 	routed to one of the four functions below to derive the undefined value.
 	* The precision of some calculations may be affected by floating point 
 	operations!
+	* The use of the change variable should be synonymous with
+  a change factor.
 ============================================================================= */
 module.exports = {
 	percentChangeByPeriod,
@@ -23,11 +25,11 @@ module.exports = {
  * @param  {Number} Periods
  * @return {Number} Percent Change
  */
-function percentChangeByPeriod(start, end, periods) {
+function percentChangeByPeriod(start, end, periods = 1) {
 	const change = end / start;
 	const exponent = 1 / periods;
-	const changeFactor = Math.pow(change, exponent) - 1;
-	const percentChangeByPeriod = changeFactor * 100;
+	const changeFactor = Math.pow(change, exponent);
+	const percentChangeByPeriod = (changeFactor - 1) * 100;
 	return percentChangeByPeriod;
 }
 
@@ -72,12 +74,11 @@ function periods(start, end, percent) {
 	const lnChangeByPeriod = Math.log(changeByPeriod);
 	const periods = lnChange / lnChangeByPeriod;
 	// Leaving console.log() for ellucidation
-	console.log({change, changeByPeriod, lnChange, lnChangeByPeriod, periods});
+	// console.log({start, end, percent, change, changeByPeriod, lnChange, lnChangeByPeriod, periods});
 	return periods;
 }
 
 /**
- * changeFactorOnPercent will always be non-negative.
  * A changeFactorOnPercent of 1 indicates 0 change. 
  * Anything multiplied by 1 is itself. No change.
  * A changeFactorOnPercent of 0, means a -100%
@@ -86,9 +87,9 @@ function periods(start, end, percent) {
  */
 function changeFactorOnPercent(percent) {
 	// If change is 100%, then we want a doubling for each period, 
-	// hence the addition of 1 for a value of 2. A doubling. 
+	// hence the addition of 1 for a changeFactor of 2. A doubling. 
 	// If change is 200%, then we want a tripling for each period,
-	// hence the addition of 1 for a value of 3. A tripling.
+	// hence the addition of 1 for a changeFactor of 3. A tripling.
 	// And so on.
 	const changeFactorOnPercent = (percent / 100) + 1;
 	return changeFactorOnPercent;

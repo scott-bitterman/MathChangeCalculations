@@ -54,13 +54,23 @@ test('-100% change results in an end value of 0', () => {
   expect(end(1, 1, -100)).toBe(0);
 });
 
-test('-100% change results in an end value of 0', () => {
-  expect(periods(1, 0, -100)).toBe(1);
+test('-100% change results in an period value of 0', () => {
+  expect(periods(1, 0, -100)).toBe(NaN);
 });
 
 /* ============================================================================= 
 Unhappy Paths :( 
 ============================================================================= */ 
+test('Period equation with extraordianry change', () => {
+	// If there is zero change, but a percent change is specified, then expect zero
+	// It takes 0 periods to change nothing.
+  expect(periods(4, 4, 500)).toBe(0);
+});
+
+test('Passing a string where a number is expected', () => {
+  expect(percentChangeByPeriod('string', 'string', 'string')).toBe(NaN);
+});
+
 test('Testing 0 periods', () => {
 	// Dividing by 0 is mathematically undefined. JS returns Infinity.
   expect(percentChangeByPeriod(1, 2, 0)).toBe(Infinity);
@@ -76,19 +86,11 @@ test('Start is 0. Testing dividing by zero in JS', () => {
   expect(percentChangeByPeriod(0, 0, 1)).toBe(NaN);
 });
 
-test('Passing a string where a number is expected', () => {
-  expect(percentChangeByPeriod('string', 'string', 'string')).toBe(NaN);
-});
-
 test('No change, zero change in deriving periods', () => {
 	// If percent change is 0 and there's no actual change, then periods 
 	// can't be derived due to 0/0, which JS calculates as NaN
+	// IMO this should return 0. It takes 0 periods to enact 0 change.
   expect(periods(1, 1, 0)).toBe(NaN);
 });
 
-test('Period equation with extraordianry change', () => {
-	// If there is zero change, but a percent change is specified, then expect zero
-	// It takes 0 periods to change nothing.
-  expect(periods(4, 4, 500)).toBe(0);
-});
 
