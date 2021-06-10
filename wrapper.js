@@ -8,11 +8,9 @@
     4. If conditions (1) and (2) are met, then it routes logic
     to the correct function to derive the single undefined variable.
 
-  This wrapper also handles...
-
   This wrapper is a conveniece layer that allows for a single function to be
   called with indeterminate variables (as long as three of the four
-  are defined). Helpful if use case is passing in the four variables
+  are defined). Helpful if the use case is passing in the four variables
   from a GUI.
 ============================================================================= */
 const {
