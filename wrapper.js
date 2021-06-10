@@ -3,7 +3,7 @@
 
   This wrapper does the following to handle the algebra of mathematical change:
     1. Determines if exactly three of the variables are defined.
-    2. Determines if exactly one of the variables is undefined.
+    2. Determines if all defined variables are numbers.
     3. If conditions (1) and (2) aren't met, then throws a meaningful error.
     4. If conditions (1) and (2) are met, then it routes logic
     to the correct function to derive the single undefined variable.
@@ -12,7 +12,7 @@
 
   This wrapper is a conveniece layer that allows for a single function to be
   called with indeterminate variables (as long as three of the four
-  are defined). Could be helpful if use case is passing in the four variables
+  are defined). Helpful if use case is passing in the four variables
   from a GUI.
 ============================================================================= */
 const {
@@ -28,12 +28,12 @@ const ERRS = {
 };
 
 /**
- * Calculates the percent growth over some period of time
+ * Calculates various change values over time
  * @param  {Number} Start Amount
  * @param  {Number} End Amount
  * @param  {Number} Number of periods
  * @param  {Number} Percent change
- * @return ???
+ * @return {Number|Error}
  */
 function calc (startNumber, endNumber, period, percentChange) {
   const values = { startNumber, endNumber, period, percentChange };
